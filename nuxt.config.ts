@@ -9,6 +9,7 @@ export default defineNuxtConfig({
       realApiUrl: process.env.REAL_API_URL || 'https://dummyjson.com'
     },
   },
+  modules: ['@nuxtjs/tailwindcss'],
   vite: {
     server: {
       proxy: process.env.USE_VITE_PROXY === 'true' ? {

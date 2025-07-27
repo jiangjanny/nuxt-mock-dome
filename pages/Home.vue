@@ -1,4 +1,5 @@
 <template>
+    <nuxt-link to="/form">FORM</nuxt-link>
     <div :class="['flex', { show: showFlex }]">dsfsdf</div>
     <p>「大家會擔心有一天在網路看到自己嗎？」一名網友日前發文指出，使用Threads時意外發現，好多人會分享生活中雞毛蒜皮的小事，配圖卻是偷拍視角，讓她很震驚。貼文一出，掀起不少人共鳴，因此現象越來越常見，如今出門都必須戴口罩，擔心自己一不小心就出現在網路上。
 
