@@ -1,50 +1,43 @@
+// composables/useLeaveGuard.ts
+import { useRouter, useRoute } from 'vue-router'
 import { ref, onBeforeUnmount } from 'vue'
 
-export function useReloadGuard(onConfirmReload: () => void) {
+export function useLeaveGuard(shouldBlock: () => boolean, onConfirmLeave: () => void) {
+    const router = useRouter()
+    const route = useRoute()
     const showModal = ref(false)
-    let triggerByRefresh = false
+    const nextRoute = ref<any>(null)
 
-    const show = () => {
-        triggerByRefresh = true
-        showModal.value = true
-    }
-
-    const confirm = () => {
-        showModal.value = false
-        if (triggerByRefresh) {
-            onConfirmReload()
+    const handler = router.beforeEach((to, from, next) => {
+        if (!shouldBlock()) {
+            return next()
         }
-    }
-
-    const cancel = () => {
-        showModal.value = false
-        triggerByRefresh = false
-    }
-
-    // 自訂模擬「刷新」行為 (例如按 F5)
-    const handleKeydown = (e: KeyboardEvent) => {
-        if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
-            e.preventDefault()
-            show()
+        if (to.fullPath !== from.fullPath) {
+            showModal.value = true
+            nextRoute.value = to
+            return next(false)
         }
-    }
-
-    // 可加入 visibilitychange 做支援（可選）
-    const handleVisibilityChange = () => {
-        if (document.visibilityState === 'hidden') {
-            // show()
-        }
-    }
-
-    onMounted(() => {
-        window.addEventListener('keydown', handleKeydown)
-        document.addEventListener('visibilitychange', handleVisibilityChange)
+        next()
     })
+
+    const confirmLeave = () => {
+        showModal.value = false
+        onConfirmLeave()
+        router.push(nextRoute.value)
+    }
+
+    const cancelLeave = () => {
+        showModal.value = false
+        nextRoute.value = null
+    }
 
     onBeforeUnmount(() => {
-        window.removeEventListener('keydown', handleKeydown)
-        document.removeEventListener('visibilitychange', handleVisibilityChange)
+        handler() // 移除導航守衛
     })
 
-    return { showModal, confirm, cancel }
+    return {
+        showModal,
+        confirmLeave,
+        cancelLeave,
+    }
 }
