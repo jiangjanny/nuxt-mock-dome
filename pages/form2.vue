@@ -29,13 +29,55 @@
 import { reactive } from 'vue'
 import { Form, Field, defineRule } from 'vee-validate'
 import { required } from '@vee-validate/rules'
+import { Title } from '#components'
 
 defineRule('required', required)
+// initialEnabled 是固定不變的「初始狀態」。
 
+// enabled 是會被 checkbox 綁定改變的狀態。
 const rawFields = [
     { name: '', Required: false, initialEnabled: true },
     { name: '', Required: true, initialEnabled: false },
     { name: '', Required: true, initialEnabled: true },
+]
+
+const raw = [
+    {
+        name: 'sd',
+        code: 'we',
+        item: [
+            { title: 'd', name: '', Required: false, initialEnabled: true },
+            { title: 'd', name: '', Required: true, initialEnabled: false },
+            { title: 'd', name: '', Required: true, initialEnabled: true },
+        ]
+    },
+    {
+        name: 'sdewr',
+        code: 'wetret',
+        item: [
+            { title: 'd', name: '', Required: false, initialEnabled: true },
+            { title: 'd', name: '', Required: true, initialEnabled: false },
+            { title: 'd', name: '', Required: true, initialEnabled: true },
+        ]
+    },
+    {
+        name: 'wrsd',
+        code: 'we',
+        item: [
+            { title: 'werd', name: '', Required: false, initialEnabled: true },
+            { title: 'd', name: '', Required: true, initialEnabled: false },
+            { title: 'werd', name: '', Required: true, initialEnabled: true },
+        ]
+    },
+    {
+        name: 'sdeewrwr',
+        code: 'wetwerret',
+        item: [
+            { title: 'we', name: '', Required: false, initialEnabled: true },
+            { title: 'werd', name: '', Required: true, initialEnabled: false },
+            { title: 'd', name: '', Required: true, initialEnabled: true },
+        ]
+    }
 ]
 
 const fields = reactive(rawFields.map(f => ({ ...f, enabled: f.initialEnabled })))
