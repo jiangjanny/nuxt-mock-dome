@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     },
   },
   modules: ['@nuxtjs/tailwindcss'],
+  plugins: ['./plugins/tabCommunication.client.js'],
   vite: {
     server: {
       proxy: process.env.USE_VITE_PROXY === 'true' ? {
