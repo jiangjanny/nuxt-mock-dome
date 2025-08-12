@@ -15,6 +15,13 @@ const { data: products, error: productsError } = await useAsyncData('products', 
 // function refreshFromOutside() {
 //     bus.emit('refreshKey', 'userProfile')
 // }
+
+
+export function logout() {
+    const tokenCookie = useCookie('token')
+    tokenCookie.value = null
+    navigateTo('/login')
+}
 </script>
 
 <template>

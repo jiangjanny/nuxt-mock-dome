@@ -2,8 +2,6 @@ import type { FetchOptions } from 'ofetch'
 import { useToast } from '../composables/useToast'
 
 export function useApi<T>(baseURL: string, url: string, options: Partial<any> = {}) {
-    const toast = useToast()
-
     return $fetch<T>(url, {
         ...options,
         baseURL,
@@ -17,16 +15,13 @@ export function useApi<T>(baseURL: string, url: string, options: Partial<any> = 
             }
         },
         onResponseError({ response }) {
-            const status = response.status
-            const message = (response._data as any)?.message || '系統錯誤，請稍後再試'
-
-            toast.add({
-                title: '錯誤',
-                description: message,
-                color: 'red'
-            })
-
-            throw createError({ statusCode: status, statusMessage: message })
+            if (response.status === 401) {
+                // 例如清除 cookie 並跳轉登入頁
+                const tokenCookie = useCookie('token')
+                tokenCookie.value = null
+                navigateTo('/login')
+            }
+            throw createError({ statusCode: response.status, statusMessage: '認證錯誤' })
         }
     })
 }
