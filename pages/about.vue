@@ -17,11 +17,11 @@ const { data: products, error: productsError } = await useAsyncData('products', 
 // }
 
 
-export function logout() {
-    const tokenCookie = useCookie('token')
-    tokenCookie.value = null
-    navigateTo('/login')
-}
+// export function logout() {
+//     const tokenCookie = useCookie('token')
+//     tokenCookie.value = null
+//     navigateTo('/login')
+// }
 </script>
 
 <template>
