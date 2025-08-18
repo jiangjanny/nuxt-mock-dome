@@ -185,7 +185,7 @@ async function initAPI() {
         applicantidNo: '',
         lockApplicantCheckBox: true,
         applicantName: '',
-        applicantBirthdav: '1990-06-15',
+        applicantBirthdav: '',
         applicantMobile: '',
         applicantNatural: '',
         applicantJobKind: '',
