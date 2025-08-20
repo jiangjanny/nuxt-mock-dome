@@ -29,6 +29,16 @@
         <input v-model="insured.insuredEmail" placeholder="電子信箱" />
         <div class="error">{{ errors.insuredEmail }}</div>
 
+        <div>
+            <input type="radio" id="dewey" name="insured" :value="true" v-model="insured.insured" />
+            <label for="dewey">Dewey</label>
+        </div>
+        <div>
+            <input type="radio" id="louie" name="insured" :value="false" v-model="insured.insured" />
+            <label for="louie">Louie</label>
+        </div>
+        <div class="error">{{ errors.insured }}</div>
+
         <h2>要保人資料</h2>
         <select v-model="status.value">
             <option value="0">Status 0</option>
@@ -96,7 +106,7 @@
 <script setup lang="ts">
 import { watch, onMounted, reactive } from 'vue'
 import { z } from 'zod'
-import { insured, applicant, backupApplicant, status, years, months, days } from '@/composables/useInsurance'
+import { insured, applicant, backupApplicant, status, years, months, days, statusww, active } from '@/composables/useInsurance'
 
 // 驗證錯誤
 const errors = reactive<Record<string, string>>({})
@@ -148,7 +158,17 @@ const insuredSchema = z.object({
     insuredName: z.string().min(1, '必填'),
     insuredBirthday: z.object({ year: z.string().min(1, '必填'), month: z.string().min(1, '必填'), day: z.string().min(1, '必填') }),
     insuredMobile: z.string().min(1, '必填'),
-    insuredEmail: z.string().email('格式錯誤')
+    insuredEmail: z.string().email('格式錯誤'),
+    insured: z.boolean().nullable().refine(
+        (val) => {
+            // 只有在 status.value === 2 && !active.value 時，必須選取
+            if (statusww.value === 2 && !active.value) {
+                return val === true || val === false
+            }
+            return true // 其他狀態不驗證
+        },
+        { message: '請選擇被保險人' }
+    )
 })
 const applicantSchema = z.object({
     applicantidNo: z.string().min(1, '必填'),

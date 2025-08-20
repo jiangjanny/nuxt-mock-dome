@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 export const insured = reactive({
     insuredNo: '',
@@ -8,7 +8,8 @@ export const insured = reactive({
     insuredNation: '',
     insuredJobKind: '',
     insuredEmail: '',
-    insuredAddress: { city: '', area: '', detail: '' }
+    insured: null,
+    insuredAddress: { city: '', area: '', detail: '' },
 })
 
 export const applicant = reactive({
@@ -19,19 +20,23 @@ export const applicant = reactive({
     applicantName: '',
     applicantBirthdav: { year: '', month: '', day: '' },
     applicantMobile: '',
+    applicantEmail: '',
     applicantNatural: '',
     applicantJobKind: '',
-    applicantEmail: '',
     applicantAddress: { city: '', area: '', detail: '' }
 })
+
+export const years = Array.from({ length: 100 }, (_, i) => `${2000 - i}`)
+export const months = Array.from({ length: 12 }, (_, i) => `${i + 1}`)
+export const days = Array.from({ length: 31 }, (_, i) => `${i + 1}`)
+
+export const statusww = ref(2)
+export const active = ref(false)
+
 
 // 備份 applicant 資料，用於 Status 2 回復
 export const backupApplicant = reactive({ ...applicant })
 
-// 年/月/日資料
-export const years = Array.from({ length: 100 }, (_, i) => 1925 + i)
-export const months = Array.from({ length: 12 }, (_, i) => i + 1)
-export const days = Array.from({ length: 31 }, (_, i) => i + 1)
 
 // 狀態
 export const status = reactive({ value: '0' })
